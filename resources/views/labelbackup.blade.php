@@ -31,7 +31,10 @@
     $end = $data->end;
     $copy = $data->copy;
 
-    $breakCount = $copy == 1 ? 8 : 4;
+    $barcodeCount = 1;
+
+    //$breakCount = $copy == 1 ? 8 : 4;
+    $breakCount = 8;
 
     $left = true;
 
@@ -63,16 +66,16 @@
                                     )
 
                                     ?>
-                                    <qr-code size="200" text="{{ base64_encode(json_encode($barcode)) }}" />
+                                    <qr-code :size="200" text="{{ base64_encode(json_encode($barcode)) }}" />
                                 </div>
                                 <div class="border-l border-50 w-full flex" style="flex-direction: column">
                                     <div class="flex flex-1 border-b border-50" style="flex-direction: column; align-items: center; justify-content: center;">
-                                        <span class="font-bold">Plant</span>
-                                        <span style="font-size: 120px">{{ $plant }}</span>
+                                        <span>Plant</span>
+                                        <span class="font-bold" style="font-size: 120px">{{ $plant }}</span>
                                     </div>
                                     <div class="flex flex-1" style="flex-direction: column; align-items: center; justify-content: center;">
-                                        <span class="font-bold">Number</span>
-                                        <span style="font-size: 35px">{{ $colorNumber }}</span>
+                                        <span>Number</span>
+                                        <span class="font-bold" style="font-size: 35px">{{ $colorNumber }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -98,16 +101,16 @@
                                     )
 
                                     ?>
-                                    <qr-code size="200" text="{{ base64_encode(json_encode($barcode)) }}" />
+                                    <qr-code :size="200" text="{{ base64_encode(json_encode($barcode)) }}" />
                                 </div>
                                 <div class="border-l border-50 w-full flex" style="flex-direction: column">
                                     <div class="flex flex-1 border-b border-50" style="flex-direction: column; align-items: center; justify-content: center;">
-                                        <span class="font-bold">Plant</span>
-                                        <span style="font-size: 120px">{{ $plant }}</span>
+                                        <span>Plant</span>
+                                        <span class="font-bold" style="font-size: 120px">{{ $plant }}</span>
                                     </div>
                                     <div class="flex flex-1" style="flex-direction: column; align-items: center; justify-content: center;">
-                                        <span class="font-bold">Number</span>
-                                        <span style="font-size: 35px">{{ $colorNumber }}</span>
+                                        <span>Number</span>
+                                        <span class="font-bold" style="font-size: 35px">{{ $colorNumber }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -115,36 +118,38 @@
                     </div>
                     <?php $left = true; ?>
                 @endif
-            @endfor
-            @if($i % $breakCount == 0)
-                <div class="pagebreak"></div>
-            @endif
-        @endfor
-    @else
-            @for($i = $start; $i <= $end; $i++)
-                @for($j = 1; $j <= $copy; $j++)
-                    @if($left)
-                        <div class="flex">
-                            <div class="flex w-1/2 border-4 border-50 rounded-lg" style="margin-left: 1.75rem; margin-right: 1.75rem; margin-top: 1.5rem">
-                                <div class="w-full flex" style="height: 220px; align-items: center; justify-content: center;">
-                                    <span style="font-size: 150px">{{ $i }}</span>
-                                </div>
-                            </div>
-                        <?php $left = false; ?>
-                    @else
-                            <div class="flex w-1/2 border-4 border-50 rounded-lg" style="margin-left: 1.75rem; margin-right: 1.75rem; margin-top: 1.5rem">
-                                <div class="w-full flex" style="align-items: center; justify-content: center;">
-                                    <span style="font-size: 150px">{{ $i }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <?php $left = true; ?>
-                    @endif
-                @endfor
-                @if($i % $breakCount == 0)
+                @if($barcodeCount % $breakCount == 0)
                     <div class="pagebreak"></div>
                 @endif
+                <?php $barcodeCount++; ?>
             @endfor
+        @endfor
+    @else
+        @for($i = $start; $i <= $end; $i++)
+            @for($j = 1; $j <= $copy; $j++)
+                @if($left)
+                    <div class="flex">
+                        <div class="flex w-1/2 border-4 border-50 rounded-lg" style="margin-left: 1.75rem; margin-right: 1.75rem; margin-top: 1.5rem">
+                            <div class="w-full flex" style="height: 220px; align-items: center; justify-content: center;">
+                                <span style="font-size: 140px">{{ $plant }} - {{ $i }}</span>
+                            </div>
+                        </div>
+                    <?php $left = false; ?>
+                @else
+                        <div class="flex w-1/2 border-4 border-50 rounded-lg" style="margin-left: 1.75rem; margin-right: 1.75rem; margin-top: 1.5rem">
+                            <div class="w-full flex" style="align-items: center; justify-content: center;">
+                                <span style="font-size: 140px">{{ $plant }} - {{ $i }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <?php $left = true; ?>
+                @endif
+                @if($barcodeCount % $breakCount == 0)
+                    <div class="pagebreak"></div>
+                @endif
+                <?php $barcodeCount++; ?>
+            @endfor
+        @endfor
     @endif
 </div>
 
