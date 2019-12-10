@@ -151,6 +151,11 @@
             @endfor
         @endfor
     @endif
+
+    @if(! $left)
+        <div class="w-1/2" style="margin-left: 1.75rem; margin-right: 1.75rem; margin-top: 1.5rem;">
+        </div>
+    @endif
 </div>
 
 <script>

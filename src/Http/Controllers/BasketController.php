@@ -92,7 +92,7 @@ class BasketController extends Controller
 
     public function basketLabelPDF($data)
     {
-        return view('nova-ug-baskets::labelbackup', compact('data'));
+        return view('nova-ug-baskets::label2', compact('data'));
 
         $pdf = PDF::loadView('nova-ug-baskets::labelbackup', compact('data'));
 
