@@ -9,6 +9,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\PerformsValidation;
+use PDF;
 
 class BasketController extends Controller
 {
@@ -25,6 +26,16 @@ class BasketController extends Controller
         );
     }
 
+    private function colorSelection()
+    {
+        return array(
+            "B" => "Blue",
+            "Y" => "Yellow",
+            "R" => "Red",
+            "G" => "Green",
+        );
+    }
+
     public function fields(NovaRequest $request)
     {
         return  [
@@ -32,6 +43,10 @@ class BasketController extends Controller
 
             Select::make('Plant')
                 ->options($this->plantSelection())
+                ->rules('required'),
+
+            Select::make('Color')
+                ->options($this->colorSelection())
                 ->rules('required'),
 
             Number::make('Start'),
@@ -73,5 +88,15 @@ class BasketController extends Controller
     public function basketLabel($data)
     {
         return view('nova-ug-baskets::label', compact('data'));
+    }
+
+    public function basketLabelPDF($data)
+    {
+        return view('nova-ug-baskets::labelbackup', compact('data'));
+
+        $pdf = PDF::loadView('nova-ug-baskets::labelbackup', compact('data'));
+
+        return $pdf->stream('basket-label.pdf');
+        return $pdf->download('basket-label.pdf');
     }
 }
